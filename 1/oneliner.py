@@ -1,0 +1,1 @@
+print(__import__("math").prod(next(pair for pair in __import__("itertools").combinations(map(int, open("input", "r").read().splitlines()), 3) if sum(pair) == 2020)))
