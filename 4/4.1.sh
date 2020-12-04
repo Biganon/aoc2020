@@ -1,0 +1,1 @@
+cat input | sed 's#^$#/#g;s# #,#g;s#\([^/]\)$#\1,#' | tr -d "\n" | tr "/" "\n" | sed 's#cid:[0-9]\+,##' | awk -F',' 'NF==8' | sed 's#,$##'
