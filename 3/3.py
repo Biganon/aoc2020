@@ -1,9 +1,9 @@
 from math import prod
 
-def collisions(dx, dy):
-    with open("input", "r") as f:
-        grid = f.read().splitlines()
+with open("input", "r") as f:
+    grid = f.read().splitlines()
 
+def collisions(dx, dy):
     row = 0
     column = 0
 
