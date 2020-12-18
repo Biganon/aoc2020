@@ -34,7 +34,6 @@ def iterate(grid):
         for z, slice_ in enumerate(hslice):
             for y, row in enumerate(slice_):
                 for x, cell in enumerate(row):
-                    # print(f"{x} {y} {z} {w}")
                     n = 0
                     for dw in range(-1, 2):
                         for dz in range(-1, 2):
