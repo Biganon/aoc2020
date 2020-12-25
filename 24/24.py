@@ -24,46 +24,41 @@ for line in lines:
     tuple_ = (cursor["x"], cursor["y"])
     tiles[tuple_] = not tiles[tuple_]
 
-# print(len([tile for tile in tiles.values() if tile]))
-
-###
-
 for i in range(100):
+
+    to_test = dict((k,v) for (k,v) in tiles.items() if v)
+
+    extras = {}
+    for (x,y) in to_test.keys():
+        for delta in deltas.values():
+            dx, dy = delta.values()
+            if dx == 0 and dy == 0:
+                continue
+            if (x+dx, y+dy) in to_test:
+                continue
+            if (x+dx) % 2 != (y+dy) % 2:
+                continue
+            extras[(x+dx, y+dy)] = False
+    to_test.update(extras)
 
     new = defaultdict(lambda: False)
 
-    minx = min(tile[0] for tile in tiles)-2
-    maxx = max(tile[0] for tile in tiles)+2
-    miny = min(tile[1] for tile in tiles)-2
-    maxy = max(tile[1] for tile in tiles)+2
+    for ((x,y), current) in to_test.items():
+        nw = int(to_test.get((x-1, y+1), False))
+        ne = int(to_test.get((x+1, y+1), False)) 
+        sw = int(to_test.get((x-1, y-1), False)) 
+        se = int(to_test.get((x+1, y-1), False)) 
+        w  = int(to_test.get((x-2, y+0), False)) 
+        e  = int(to_test.get((x+2, y+0), False)) 
+        
+        n = sum([nw, ne, sw, se, w, e])
 
-    # print(f"{minx=} {maxx=} {miny=} {maxy=}")
-
-    for y in range(miny, maxy+1):
-        for x in range(minx, maxx+1):
-            # print(f"Testing {x=} {y=}")
-            current = len([k for k,v in tiles.items() if k[0] == x and k[1] == y and v])
-            # print(f"{current=}")
-            nw = len([k for k,v in tiles.items() if k[0] == x-1 and k[1] == y+1 and v])
-            # print(f"{nw=}")
-            ne = len([k for k,v in tiles.items() if k[0] == x+1 and k[1] == y+1 and v])
-            # print(f"{ne=}")
-            sw = len([k for k,v in tiles.items() if k[0] == x-1 and k[1] == y-1 and v])
-            # print(f"{sw=}")
-            se = len([k for k,v in tiles.items() if k[0] == x+1 and k[1] == y-1 and v])
-            # print(f"{se=}")
-            w  = len([k for k,v in tiles.items() if k[0] == x-2 and k[1] == y+0 and v])
-            # print(f"{w=}")
-            e  = len([k for k,v in tiles.items() if k[0] == x+2 and k[1] == y+0 and v])
-            # print(f"{e=}")
-            n = sum([nw, ne, sw, se, w, e])
-            # print(f"{n=}")
-            if current and (n == 0 or n > 2):
-                pass
-            elif not current and n == 2:
-                new[(x, y)] = True
-            elif current:
-                new[(x, y)] = True
+        if current and (n == 0 or n > 2):
+            pass
+        elif not current and n == 2:
+            new[(x, y)] = True
+        elif current:
+            new[(x, y)] = True
 
     print(f"Day {i+1}: {len([tile for tile in new.values() if tile])}")
 
